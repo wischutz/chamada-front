@@ -1,19 +1,10 @@
 import { createStore } from 'vuex'
+import geral from '@/store/modules/geral'
 
 const store = createStore({
     modules:{
-
+        geral,
     },
-    state () {
-        return{
-            access_token: ''
-        }
-    },
-    mutations: {
-		authenticate (state, token) {
-			state.access_token = token
-      }
-    }
 })
 
 export default store
