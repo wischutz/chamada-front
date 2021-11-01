@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
+
 export default {
   name: 'Home',
   components: {
@@ -12,19 +14,29 @@ export default {
       errors: []
     }
   },
+  computed: {
+		...mapState({
+			geral: state => state.geral,
+		}),
+    ...mapGetters({
+      accessToken: 'geral/getAccessToken'
+		}),
+  },
   methods: {    
     
   },
-  //beforeRouteEnter(to, from, next) {
-    //   next(app => {
-    //     const token = app.$cookies.get('access_token')
+  mounted() {
+		this.$nextTick(async function () {
+    })
+  },
+   beforeRouteEnter(to, from, next) {
+      next(app => {
+        const token = app.$store.state.geral.accessToken
         
-    //     if (!token) {
-    //       //console.log(token)
-    //     } else {
-    //       app.$router.push({name: 'Home'})
-    //     }
-    //   })
-  //}
+        if (!token) {
+          app.$router.push({name: 'Login'})
+        }
+      })
+  }
 }
 </script>

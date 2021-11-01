@@ -28,6 +28,7 @@
 
 <script>
 import { requests } from '@/components/helper/requests';
+import { mapState } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -39,6 +40,11 @@ export default {
       errors: []
     }
   },
+  computed: {
+		...mapState({
+			geral: state => state.geral,
+		})
+  },
   methods: {    
     async login() {
       const payload = {
@@ -47,27 +53,24 @@ export default {
       }
       
       const a = await requests.post(process.env.VUE_APP_API_URL+'login', payload, null)
-      if(a.access_token){        
-        // this.$cookies.set('access_token', a.access_token)
-        // this.$cookies.set('nome_usuario', a.nome_usuario)
-        // this.$router.push({name: 'Home'})
-        console.log('a.access_token')
+      if(a.access_token){
+        await this.$store.dispatch('geral/setAccessToken', a.access_token);
+
+        this.$router.push({name: 'Home'})
       }else{
         this.errors = ['Usuário ou senha inválidos.']
         return this.errors
       }
     }    
   },
-  //beforeRouteEnter(to, from, next) {
-    //   next(app => {
-    //     const token = app.$cookies.get('access_token')
+  beforeRouteEnter(to, from, next) {
+      next(app => {
+        const token = app.$store.state.geral.accessToken
         
-    //     if (!token) {
-    //       //console.log(token)
-    //     } else {
-    //       app.$router.push({name: 'Home'})
-    //     }
-    //   })
-  //}
+        if (token) {
+          app.$router.push({name: 'Home'})
+        }
+      })
+  }
 }
 </script>
