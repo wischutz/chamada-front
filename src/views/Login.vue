@@ -64,7 +64,7 @@ export default {
       const a = await requests.post(process.env.VUE_APP_API_URL+'login', payload, null)
      if (a.access_token) {
 				this.$cookies.set("access_token", a.access_token);
-				this.$router.push({ name: "Home" });
+				this.$router.push({ name: "turmas_list" });
 			} else {
 				this.errors = ["Usuário ou senha inválidos."];
 				return this.errors;
@@ -76,7 +76,7 @@ export default {
         const token = app.$cookies.get("access_token");
 			
         if (token) {
-          app.$router.push({ name: "Home" });
+          app.$router.push({ name: "turmas_list" });
         }
       })
   }

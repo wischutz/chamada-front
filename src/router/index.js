@@ -11,7 +11,19 @@ const routes = [
 	{
 		path: '/',
 		name: 'Home',
-		component: Home
+		component: Home,
+		children: [
+			{
+				path: 'turmas',
+				name: "turmas_list",
+				component: () => import('@/views/turmas/TurmasList.vue')
+			},
+			{
+				path: 'turmas/nova',
+				name: "turmas_create",
+				component: () => import('@/views/turmas/TurmasCreate.vue')
+			},
+		]
 	},
 ]
 
