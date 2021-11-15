@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in list" :key="index">
+            <tr v-for="(item, index) in list" :key="index" @click="this.editaTurma(item.id)" style="cursor:pointer">
                 <td>{{ item.nome }}</td>
                 <td>{{ item.professor }}</td>
                 <td>{{ item.serieGrau }}</td>
@@ -50,6 +50,9 @@ export default{
     methods:{
         cadastraTurma: function(){
             this.$router.push({ name: 'turmas_create' })
+        },
+        editaTurma: function(id){
+            this.$router.push({ name: 'turmas_update', params:{ turmaId: id }})
         }
     },
     mounted() {

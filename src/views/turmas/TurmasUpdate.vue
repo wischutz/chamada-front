@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Nova Turma</h1>
+        <h1 class="h2">Editar Turma</h1>
     </div>
     <div class="row">
         <form>
@@ -23,7 +23,7 @@
                 <label for="professor" class="form-label">Professor</label>
                 <select name="professor" id="professor" v-model="turma.professor" class="form-control">
                     <option value="">Selecione</option>
-                    <option v-for="(item, index) in professores" :key="index" :value="item.id">{{ item.nome }}</option>
+                    <option v-for="(item, index) in professores" :key="index" :value="item.id" :selected="(item.nome == turma.professor)">{{ item.nome }}</option>
                 </select>
             </div>
             <button type="button" @click="salvar()" @keyup.enter="salvar()" class="btn btn-primary">Salvar</button>
@@ -50,15 +50,14 @@ export default{
 			erro: 'turma/getErro',
             series: 'serie/getSeries',
             professores: 'usuario/getUsuarios',
+            turmaLoad: 'turma/getTurma',
 		}),
 	},
     methods:{
         async salvar(){
-            
-
-            await this.$store.dispatch('turma/create', {
+            await this.$store.dispatch('turma/update', {
                 formulario: {...this.turma},
-				url: process.env.VUE_APP_API_URL + "turmas/",
+				url: process.env.VUE_APP_API_URL + "turmas/" + this.$route.params.turmaId,
 				token: this.$cookies.get("access_token"),
 			});
 
@@ -86,6 +85,21 @@ export default{
 				url: process.env.VUE_APP_API_URL + "usuarios",
 				cookie: this.$cookies.get("access_token"),
 			});
+
+            await this.$store.dispatch('turma/read', {
+				data: {
+				},
+				url: process.env.VUE_APP_API_URL + "turmas/" + this.$route.params.turmaId,
+				cookie: this.$cookies.get("access_token"),
+			});
+
+            this.turma.nome = this.turmaLoad.nome
+            this.turma.descricao = this.turmaLoad.descricao
+            this.turma.serie = this.turmaLoad.serie.id
+            this.turma.professor = this.turmaLoad.professor.id
+
+            // document.getElementById("serie").value = this.turma.serie.id
+            // document.getElementById("professor").value = this.turma.professor.id
         })
 	},
     beforeRouteEnter(to, from, next) {

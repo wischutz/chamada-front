@@ -23,6 +23,11 @@ const routes = [
 				name: "turmas_create",
 				component: () => import('@/views/turmas/TurmasCreate.vue')
 			},
+			{
+				path: 'turmas/:turmaId',
+				name: "turmas_update",
+				component: () => import('@/views/turmas/TurmasUpdate.vue')
+			},
 		]
 	},
 ]

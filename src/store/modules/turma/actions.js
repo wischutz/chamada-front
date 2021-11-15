@@ -5,7 +5,7 @@ const actions = {
         commit('setTurmas', turmas.data.map(function(obj){
             return {
                 id: obj.id,
-                professor: obj.professor,
+                professor: obj.professor.nome,
                 serieGrau: obj.serie.grau,
                 serieAno: obj.serie.ano,
                 nome: obj.nome,
