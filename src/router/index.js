@@ -43,6 +43,21 @@ const routes = [
 				name: "usuarios_update",
 				component: () => import('@/views/usuarios/UsuariosUpdate.vue')
 			},
+			{
+				path: 'alunos',
+				name: "alunos_list",
+				component: () => import('@/views/alunos/AlunosList.vue')
+			},
+			{
+				path: 'alunos/nova',
+				name: "alunos_create",
+				component: () => import('@/views/alunos/AlunosCreate.vue')
+			},
+			{
+				path: 'alunos/:alunoId',
+				name: "alunos_update",
+				component: () => import('@/views/alunos/AlunosUpdate.vue')
+			},
 		]
 	},
 ]

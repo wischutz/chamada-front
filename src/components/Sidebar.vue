@@ -9,10 +9,10 @@
                 </router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <router-link class="nav-link active" aria-current="page" to="/alunos">
                     <i class="fas fa-user-friends"></i>
                     Alunos
-                </a>
+                </router-link>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">

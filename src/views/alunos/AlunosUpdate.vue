@@ -1,29 +1,22 @@
 <template>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Nova Turma</h1>
+        <h1 class="h2">Editar Aluno</h1>
     </div>
     <div class="row">
         <form>
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" v-model="turma.nome" class="form-control" id="nome" >
+                <input type="text" v-model="aluno.nome" class="form-control" id="nome" >
             </div>
             <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição</label>
-                <input type="text" v-model="turma.descricao" class="form-control" id="descricao">
+                <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                <input type="date" v-model="aluno.dataNascimento" class="form-control" id="dataNascimento">
             </div>
             <div class="mb-3">
                 <label for="serie" class="form-label">Série</label>
-                <select name="serie" id="serie" v-model="turma.serie" class="form-control">
+                <select name="serie" id="serie" v-model="aluno.serie" class="form-control">
                     <option value="" selected="selected">Selecione</option>
                     <option v-for="(item, index) in series" :key="index" :value="item.id">Grau: {{ item.grau }} || Ano: {{ item.ano }}</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="professor" class="form-label">Professor</label>
-                <select name="professor" id="professor" v-model="turma.professor" class="form-control">
-                    <option value="" selected="selected">Selecione</option>
-                    <option v-for="(item, index) in professores" :key="index" :value="item.id">{{ item.nome }}</option>
                 </select>
             </div>
             <button type="button" @click="salvar()" @keyup.enter="salvar()" class="btn btn-primary">Salvar</button>
@@ -36,33 +29,33 @@
 import { mapGetters } from 'vuex'
 
 export default{
-    name: "TurmasCreate",
+    name: "AlunosUpdate",
     components: {
     },
     data() {
         return {
-            turma:{},
+            aluno:{},
             errors: []
         }
     },
     computed: {
 		...mapGetters({
-			erro: 'turma/getErro',
+			erro: 'aluno/getErro',
             series: 'serie/getSeries',
-            professores: 'usuario/getUsuarios',
+            alunoLoad: 'aluno/getAluno',
 		}),
 	},
     methods:{
         async salvar(){
-            await this.$store.dispatch('turma/create', {
-                formulario: {...this.turma},
-				url: process.env.VUE_APP_API_URL + "turmas/",
+            await this.$store.dispatch('aluno/update', {
+                formulario: {...this.aluno},
+				url: process.env.VUE_APP_API_URL + "alunos/" + this.$route.params.alunoId,
 				token: this.$cookies.get("access_token"),
 			});
 
             if(this.erro && this.erro.send && this.erro.success == 1){				
-				this.turma = {}
-                this.$router.push({ name: 'turmas_list' })
+				this.aluno = {}
+                this.$router.push({ name: 'alunos_list' })
 			} else if(this.erro && this.erro.send && this.erro.success != 1){
 				this.$refs.erro.showAlert = true;
 				this.$refs.erro.message = this.erro.message;
@@ -78,12 +71,22 @@ export default{
 				cookie: this.$cookies.get("access_token"),
 			});
 
-            await this.$store.dispatch('usuario/getUsuarios', {
+            await this.$store.dispatch('aluno/read', {
 				data: {
 				},
-				url: process.env.VUE_APP_API_URL + "usuarios",
+				url: process.env.VUE_APP_API_URL + "alunos/" + this.$route.params.alunoId,
 				cookie: this.$cookies.get("access_token"),
 			});
+
+            this.aluno.nome = this.alunoLoad.nome
+            //this.aluno.dataNascimento = new Date(this.alunoLoad.dataNascimento).toLocaleString('pt-BR')
+            this.aluno.dataNascimento =this.alunoLoad.dataNascimento.split('T')[0]
+            this.aluno.serie = this.alunoLoad.serie.id
+
+            console.log(this.aluno.dataNascimento)
+            console.log(this.alunoLoad.dataNascimento)
+
+            document.getElementById('dataNascimento').value = this.aluno.dataNascimento
         })
 	},
     beforeRouteEnter(to, from, next) {

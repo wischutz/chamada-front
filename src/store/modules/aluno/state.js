@@ -1,6 +1,6 @@
 const state = () => ({
-    usuarios: [],
-    usuario: {},
+    alunos: [],
+    aluno: {},
     formulario: {},
     erro: {
         send: false,

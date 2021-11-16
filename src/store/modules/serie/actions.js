@@ -6,8 +6,8 @@ const actions = {
             return {
                 id: obj.id,
                 alunos: obj.alunos,
-                ano: obj.grau,
-                grau: obj.ano,
+                ano: obj.ano,
+                grau: obj.grau,
             }
         }));
     },
