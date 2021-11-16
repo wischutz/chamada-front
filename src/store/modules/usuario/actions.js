@@ -7,7 +7,8 @@ const actions = {
                 id: obj.id,
                 nome: obj.nome,
                 email: obj.email,
-                ativo: obj.ativo
+                tipo: obj.roles[0] ?? '',
+                ativo: (obj.ativo == 1)? 'sim' : 'não'
             }
         }));
     },

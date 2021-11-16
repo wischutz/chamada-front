@@ -36,7 +36,7 @@
 import { mapGetters } from 'vuex'
 
 export default{
-    name: "TurmasCreate",
+    name: "TurmasUpdate",
     components: {
     },
     data() {
@@ -97,9 +97,6 @@ export default{
             this.turma.descricao = this.turmaLoad.descricao
             this.turma.serie = this.turmaLoad.serie.id
             this.turma.professor = this.turmaLoad.professor.id
-
-            // document.getElementById("serie").value = this.turma.serie.id
-            // document.getElementById("professor").value = this.turma.professor.id
         })
 	},
     beforeRouteEnter(to, from, next) {

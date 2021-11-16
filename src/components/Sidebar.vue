@@ -21,10 +21,10 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <router-link class="nav-link active" aria-current="page" to="/usuarios">
                     <i class="fas fa-users"></i>
                     Usuários
-                </a>
+                </router-link>
             </li>
             </ul>
         </div>

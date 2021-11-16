@@ -28,6 +28,21 @@ const routes = [
 				name: "turmas_update",
 				component: () => import('@/views/turmas/TurmasUpdate.vue')
 			},
+			{
+				path: 'usuarios',
+				name: "usuarios_list",
+				component: () => import('@/views/usuarios/UsuariosList.vue')
+			},
+			{
+				path: 'usuarios/nova',
+				name: "usuarios_create",
+				component: () => import('@/views/usuarios/UsuariosCreate.vue')
+			},
+			{
+				path: 'usuarios/:usuarioId',
+				name: "usuarios_update",
+				component: () => import('@/views/usuarios/UsuariosUpdate.vue')
+			},
 		]
 	},
 ]

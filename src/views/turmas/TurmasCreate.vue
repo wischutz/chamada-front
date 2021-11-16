@@ -15,14 +15,14 @@
             <div class="mb-3">
                 <label for="serie" class="form-label">Série</label>
                 <select name="serie" id="serie" v-model="turma.serie" class="form-control">
-                    <option value="">Selecione</option>
+                    <option value="" selected="selected">Selecione</option>
                     <option v-for="(item, index) in series" :key="index" :value="item.id">Ano: {{ item.ano }} || Série: {{ item.grau }}</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="professor" class="form-label">Professor</label>
                 <select name="professor" id="professor" v-model="turma.professor" class="form-control">
-                    <option value="">Selecione</option>
+                    <option value="" selected="selected">Selecione</option>
                     <option v-for="(item, index) in professores" :key="index" :value="item.id">{{ item.nome }}</option>
                 </select>
             </div>
