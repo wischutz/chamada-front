@@ -79,7 +79,6 @@ export default{
 			});
 
             this.aluno.nome = this.alunoLoad.nome
-            //this.aluno.dataNascimento = new Date(this.alunoLoad.dataNascimento).toLocaleString('pt-BR')
             this.aluno.dataNascimento =this.alunoLoad.dataNascimento.split('T')[0]
             this.aluno.serie = this.alunoLoad.serie.id
 

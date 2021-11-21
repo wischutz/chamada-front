@@ -16,15 +16,44 @@
                 <label for="serie" class="form-label">Série</label>
                 <select name="serie" id="serie" v-model="turma.serie" class="form-control">
                     <option value="">Selecione</option>
-                    <option v-for="(item, index) in series" :key="index" :value="item.id">Ano: {{ item.ano }} || Série: {{ item.grau }}</option>
+                    <option v-for="(item, index) in series" :key="index" :value="item.id">Grau: {{ item.grau }} || Ano: {{ item.ano }}</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="professor" class="form-label">Professor</label>
                 <select name="professor" id="professor" v-model="turma.professor" class="form-control">
                     <option value="">Selecione</option>
-                    <option v-for="(item, index) in professores" :key="index" :value="item.id" :selected="(item.nome == turma.professor)">{{ item.nome }}</option>
+                    <option v-for="(item, index) in professores" :key="index" :value="item.id">{{ item.nome }}</option>
                 </select>
+            </div>
+             <div class="mb-3">
+                <label for="aluno" class="form-label">Vincular Aluno</label>
+                <select name="aluno" id="aluno" v-model="aluno" class="form-control">
+                    <option value="">Selecione</option>
+                    <option v-for="(item, index) in alunos" :key="index" :value="item.id">{{ item.nome }}</option>
+                </select>
+                <button type="button" @click="vinculaAluno()" @keyup.enter="vinculaAluno()" class="btn btn-info">Vincular</button>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <h4 class="h4">Alunos Vinculados</h4>
+                <p v-if="turma.turmaAluno.length <= 0">Nenhum Aluno Vinculado</p>
+                <div class="table-responsive" v-else>
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in turma.turmaAluno" :key="index">
+                                <td>{{ item.aluno }}</td>
+                                <td>{{ item.situacao }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <button type="button" @click="salvar()" @keyup.enter="salvar()" class="btn btn-primary">Salvar</button>
         </form>
@@ -41,7 +70,9 @@ export default{
     },
     data() {
         return {
-            turma:{},
+            turma:{
+                turmaAluno: []
+            },
             errors: []
         }
     },
@@ -51,10 +82,13 @@ export default{
             series: 'serie/getSeries',
             professores: 'usuario/getUsuarios',
             turmaLoad: 'turma/getTurma',
+            alunos: 'aluno/getAlunos'
 		}),
 	},
     methods:{
         async salvar(){
+            delete this.turma.turmaAluno
+            
             await this.$store.dispatch('turma/update', {
                 formulario: {...this.turma},
 				url: process.env.VUE_APP_API_URL + "turmas/" + this.$route.params.turmaId,
@@ -68,6 +102,36 @@ export default{
 				this.$refs.erro.showAlert = true;
 				this.$refs.erro.message = this.erro.message;
 			}
+        },
+        async vinculaAluno(){
+            console.log('function')
+            const turmaAluno = {
+                aluno: this.aluno,
+                turma: this.$route.params.turmaId,
+                situacao: process.env.VUE_APP_SITUACAO_MATRICULADO
+            }
+
+            await this.$store.dispatch('turmaAluno/create', {
+                formulario: {...turmaAluno},
+				url: process.env.VUE_APP_API_URL + "turma-alunos/",
+				token: this.$cookies.get("access_token"),
+			});
+
+            this.carregaTurma()
+        },
+        async carregaTurma(){
+            await this.$store.dispatch('turma/read', {
+				data: {
+				},
+				url: process.env.VUE_APP_API_URL + "turmas/" + this.$route.params.turmaId,
+				cookie: this.$cookies.get("access_token"),
+			});
+
+            this.turma.nome = this.turmaLoad.nome
+            this.turma.descricao = this.turmaLoad.descricao
+            this.turma.serie = this.turmaLoad.serie.id
+            this.turma.professor = this.turmaLoad.professor.id
+            this.turma.turmaAluno = this.turmaLoad.turmaAluno
         }
     },
     mounted() {
@@ -86,17 +150,14 @@ export default{
 				cookie: this.$cookies.get("access_token"),
 			});
 
-            await this.$store.dispatch('turma/read', {
+             await this.$store.dispatch('aluno/getAlunos', {
 				data: {
 				},
-				url: process.env.VUE_APP_API_URL + "turmas/" + this.$route.params.turmaId,
+				url: process.env.VUE_APP_API_URL + "alunos",
 				cookie: this.$cookies.get("access_token"),
 			});
 
-            this.turma.nome = this.turmaLoad.nome
-            this.turma.descricao = this.turmaLoad.descricao
-            this.turma.serie = this.turmaLoad.serie.id
-            this.turma.professor = this.turmaLoad.professor.id
+            this.carregaTurma()
         })
 	},
     beforeRouteEnter(to, from, next) {
