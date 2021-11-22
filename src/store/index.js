@@ -6,6 +6,8 @@ import usuario from '@/store/modules/usuario'
 import aluno from '@/store/modules/aluno'
 import situacao from '@/store/modules/situacao'
 import turmaAluno from '@/store/modules/turmaAluno'
+import chamada from '@/store/modules/chamada'
+import tipoPresenca from '@/store/modules/tipoPresenca'
 
 const store = createStore({
     modules:{
@@ -16,6 +18,8 @@ const store = createStore({
         aluno,
         situacao,
         turmaAluno,
+        chamada,
+        tipoPresenca,
     },
 })
 

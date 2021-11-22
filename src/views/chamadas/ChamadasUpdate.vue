@@ -150,7 +150,7 @@ export default{
 				cookie: this.$cookies.get("access_token"),
 			});
 
-            await this.$store.dispatch('aluno/getAlunos', {
+             await this.$store.dispatch('aluno/getAlunos', {
 				data: {
 				},
 				url: process.env.VUE_APP_API_URL + "alunos",

@@ -58,6 +58,16 @@ const routes = [
 				name: "alunos_update",
 				component: () => import('@/views/alunos/AlunosUpdate.vue')
 			},
+			{
+				path: 'diarios',
+				name: "chamadas_list",
+				component: () => import('@/views/chamadas/ChamadasList.vue')
+			},
+			{
+				path: 'diarios/:turmaId',
+				name: "chamadas_create",
+				component: () => import('@/views/chamadas/ChamadasCreate.vue')
+			}
 		]
 	},
 ]

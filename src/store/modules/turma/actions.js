@@ -41,6 +41,14 @@ const actions = {
             commit('setErro', {send: true, success: turma.success, message: turma.data.message});
         }
     },
+    async createAula({ commit }, payload) {
+        const aula = await apiTurma.create(payload);
+        if(aula.success == 1 && aula.data instanceof Object &&  aula.data.id) {
+            commit('setErro', {send: true, success: 1, message: ""});
+        } else {
+            commit('setErro', {send: true, success: aula.success, message: aula.data.message});
+        }
+    },
     async setErro({ commit }, payload) {
         commit('setErro', payload);
     },
