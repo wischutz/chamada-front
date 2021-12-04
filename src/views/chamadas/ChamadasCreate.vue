@@ -41,11 +41,12 @@
                             <td>{{ item.aluno }}</td>
                             <td v-for="(aula, indexAula) in item.aula" :key="indexAula"> 
                                 <select @change="registra(item.id, aula.id, $event)">
-                                    <option value="" selected="selected">-</option>
+                                    <option value="" :selected="(item.chamadas == null)? 'true' : 'false'">-</option>
                                     <option 
                                         v-for="(tipo, indexTipo) in tiposPresenca" 
                                         :key="indexTipo" 
-                                        :value="tipo.id"                                         
+                                        :value="tipo.id" 
+                                        :selected="(item.chamadas)? getChamada(item.chamadas, aula.id) == tipo.id : 'false'"
                                     >
                                         {{ tipo.sigla }}
                                     </option>
@@ -144,6 +145,18 @@ export default{
 			});
 
             this.carregaTurma()
+        },
+        getChamada(chamadas, aulaId){
+            const chamada = chamadas.filter(function(chamada){
+                return chamada.aula == aulaId
+            })
+
+            if(chamada.length < 1){
+                return null
+            }
+            
+            chamada.reverse()
+            return chamada[0].tipoPresenca.id ?? null
         }
     },
     mounted() {
